@@ -9,7 +9,17 @@ export default {
       colors: {
         bgp: '#1E213F',
         bgbtn: '#161932',
-        bgbout:'#F87070'
+        bgbout:'#F87070',
+        ft:'#D7E0FF',
+        fth:'#1E213F',
+        cercle:'#0E112A',
+        cercle1:'#2E325A',
+
+      },
+
+      letterSpacing: {
+        space:'15px',
+        num:'-5px'
       }
     },
   },
