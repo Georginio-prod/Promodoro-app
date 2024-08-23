@@ -1,9 +1,11 @@
 <script setup>
   import navbar from './components/navbar.vue'
+  import card from './components/card.vue'
 </script>
 
 <template>
   <header>
-    <navbar/>
+    <!-- <navbar/> -->
+    <card/>
   </header>
 </template>
