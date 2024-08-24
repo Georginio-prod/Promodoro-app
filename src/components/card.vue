@@ -38,61 +38,80 @@
 
             <!-- Popup -->
             <div v-if="isPopupOpen" class="fixed inset-0 bg-pop bg-opacity-50 flex justify-center items-center">
-                <div class="bg-white pt-9 rounded shadow-lg max-w-md w-full pb-6">
+                <div class="bg-white pt-9 rounded-3xl shadow-lg max-w-md w-full">
                     <div class="flex justify-between items-center px-10">
-                        <h2 class="text-xl font-bold">Settings</h2>
+                        <h2 class="text-3xl font-bold text-bgbtn">Settings</h2>
                         <img src="/public/icon-close.svg" alt="close" @click="togglePopup"
                             class="items-center cursor-pointer">
                     </div>
                     <p class="border-b w-full pt-4"></p>
 
                     <div class="flex flex-col px-10 pt-7 gap-6">
-                        <p>TIME (MINUTES)</p>
-                        <div class="flex justify-between border-b pb-6">
+                        <p class="font-bold text-sm text-bgbtn tracking-num1">TIME (MINUTES)</p>
+                        <div class="flex justify-between border-b pb-6 ">
                             <div class="flex flex-col">
 
-                                <span class=" text-sm font-semibold">pomodoro</span>
+                                <span class=" text-xs font-bold opacity-40 text-bgbtn pb-2">pomodoro</span>
                                 <input type="number" id="stepper1" value="25" min="1" max="60" step="1"
-                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent">
+                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent font-bold text-sm text-bgp" >
                             </div>
 
                             <div class="flex flex-col ">
-                                <span class="text-sm font-semibold">short break</span>
+                                <span class="text-sm font-semibold opacity-40 text-bgbtn pb-2">short break</span>
                                 <input type="number" id="stepper2" value="25" min="1" max="60" step="1"
-                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent">
+                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent font-bold text-sm text-bgp">
                             </div>
 
                             <div class="flex flex-col">
-                                <span class="text-sm font-semibold">long break</span>
+                                <span class="text-sm font-semibold opacity-40 text-bgbtn pb-2">long break</span>
                                 <input type="number" id="stepper3" value="25" min="1" max="60" step="1"
-                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent">
+                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent font-bold text-sm text-bgp">
                             </div>
 
                         </div>
 
-                        <div class="flex justify-between">
-                            <p>FONT</p>
+                        <div class="flex justify-between border-b pb-6">
+                            <p class="text-bgbtn tracking-num1 text-sm font-bold">FONT</p>
                             <div id="app" class="flex gap-4">
                                 <button class="w-10 h-10 rounded-full"
-                                    :class="isActive[0] ? 'bg-black text-white' : 'text-bgp bg-input'"
+                                    :class="isActive[0] ? 'bg-bgbtn text-white' : 'text-bgp bg-input hover:border hover:border-bgbtn'"
                                     @click="toggleFocus(0)">Aa</button>
 
                                 <button class="w-10 h-10 rounded-full"
-                                    :class="isActive[1] ? 'bg-black text-white' : 'text-bgp bg-input'"
+                                    :class="isActive[1] ? 'bg-bgbtn text-white font-serif' : 'text-bgp bg-input font-serif hover:border hover:border-bgbtn'"
                                     @click="toggleFocus(1)">Aa</button>
 
                                 <button class="w-10 h-10 rounded-full"
-                                    :class="isActive[2] ? 'bg-black text-white' : 'text-bgp bg-input'"
+                                    :class="isActive[2] ? 'bg-bgbtn text-white font-mono' : 'text-bgp bg-input font-mono hover:border hover:border-bgbtn'"
                                     @click="toggleFocus(2)">Aa</button>
                             </div>
                         </div>
 
+                        <div class="flex justify-between pb-8">
+                            <p class="text-bgbtn tracking-num1 text-sm font-bold">COLOR</p>
+                            <div id="app" class="flex gap-4">
+                                <button class="w-10 h-10 rounded-full"
+                                    :class="activeButton === 'button1' ? 'border-4 border-bgbtn bg-bgbout' : 'bg-bgbout border-2 border-input'"
+                                    @click="toggleActive('button1')"></button>
+
+                                <button class="w-10 h-10 rounded-full"
+                                    :class="activeButton === 'button2' ? 'border-4 border-bgbtn bg-bgbout2' : 'bg-bgbout2 border-2 border-input'"
+                                    @click="toggleActive('button2')"></button>
+
+                                <button class="w-10 h-10 rounded-full"
+                                    :class="activeButton === 'button3' ? 'border-4 border-bgbtn bg-bgbout1' : 'bg-bgbout1 border-2 border-input'"
+                                    @click="toggleActive('button3')"></button>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-center items-center relative">
+                            <button class="bg-bgbout py-3 px-12 text-white rounded-full absolute">
+                                Apply
+                            </button>
+                        </div>
+
                     </div>
 
-
-
-
-                    <!-- <buttonclass="mt-4 bg-red-500 text-white px-4 py-2 rounded">Fermer</button> -->
                 </div>
             </div>
         </div>
@@ -104,7 +123,8 @@ export default {
     data() {
         return {
             isPopupOpen: false,
-            isActive: [true, false, false]
+            isActive: [true, false, false],
+            activeButton: 'button1'
         };
     },
     methods: {
@@ -113,6 +133,9 @@ export default {
         },
         toggleFocus(index) {
             this.isActive = this.isActive.map((active, i) => i === index ? true : false);
+        },
+        toggleActive(button) {
+            this.activeButton = button;
         }
     }
 };

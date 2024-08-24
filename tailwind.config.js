@@ -15,13 +15,16 @@ export default {
         cercle:'#0E112A',
         cercle1:'#2E325A',
         pop: '#0A0C1C',
-        input: '#EFF1FA'
+        input: '#EFF1FA',
+        bgbout1:'#D881F8',
+        bgbout2:'#70F3F8'
 
       },
 
       letterSpacing: {
         space:'15px',
-        num:'-5px'
+        num:'-5px',
+        num1: '5px'
       }
     },
   },
