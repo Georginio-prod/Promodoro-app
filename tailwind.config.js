@@ -14,6 +14,8 @@ export default {
         fth:'#1E213F',
         cercle:'#0E112A',
         cercle1:'#2E325A',
+        pop: '#0A0C1C',
+        input: '#EFF1FA'
 
       },
 
