@@ -3,7 +3,7 @@
         <div class="text-center text-white">
             <p class="text-3xl font-bold">pomodoro</p>
         </div>
-        <div class="flex bg-bgbtn w-96 rounded-full justify-between px-2 py-2 text-sm font-bold mt-8 text-ft text-opacity-40 ">
+        <div class="flex bg-bgbtn w-96 rounded-full justify-between px-2 py-2 text-sm font-bold mt-14 text-ft text-opacity-40 ">
             <button class="px-6 py-3 bg-transparent rounded-full hover:bg-bgbout hover:text-fth">pomodoro</button>
             <button class="px-6 py-3 bg-transparent rounded-full hover:bg-bgbout hover:text-fth"> short break</button>
             <button class="px-6 py-3 bg-transparent rounded-full hover:bg-bgbout hover:text-fth">long break</button>
@@ -32,7 +32,7 @@
 
         </div>
 
-        <div class="pt-8">
+        <div class="pt-16">
             <img src="/public/icon-settings.svg" alt="paramètre" onclick="">
         </div>
 
