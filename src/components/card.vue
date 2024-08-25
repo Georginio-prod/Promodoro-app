@@ -4,11 +4,22 @@
             <p class="text-3xl font-bold">pomodoro</p>
         </div>
         <div
-            class="flex bg-bgbtn w-96 rounded-full justify-between px-2 py-2 text-sm font-bold mt-14 text-ft text-opacity-40 ">
-            <button class="px-6 py-3 bg-transparent rounded-full hover:bg-bgbout hover:text-fth">pomodoro</button>
-            <button class="px-6 py-3 bg-transparent rounded-full hover:bg-bgbout hover:text-fth"> short break</button>
-            <button class="px-6 py-3 bg-transparent rounded-full hover:bg-bgbout hover:text-fth">long break</button>
+            class="flex bg-bgbtn w-96 rounded-full justify-between px-2 py-2 text-sm font-bold mt-14 text-ft text-opacity-40">
+            <button class="px-6 py-3 rounded-full hover:text-fth hover:bg-bgbout"
+                :class="activeObjet === 'Object1' ? 'bg-bgbout text-fth' : ''" @click="toggleObjet('Object1')">
+                pomodoro
+            </button>
+            <button class="px-6 py-3 rounded-full hover:text-fth hover:bg-bgbout"
+                :class="activeObjet === 'Object2' ? 'bg-bgbout text-fth' : ''" @click="toggleObjet('Object2')">
+                short break
+            </button>
+            <button class="px-6 py-3 rounded-full hover:text-fth hover:bg-bgbout"
+                :class="activeObjet === 'Object3' ? 'bg-bgbout text-fth' : ''" @click="toggleObjet('Object3')">
+                long break
+            </button>
+
         </div>
+
         <div
             class="relative w-96 h-96 rounded-full mt-11 bg-gradient-to-br from-cercle via-cercle1 to-cercle1 p-4 shadow-custom">
             <div class="w-full h-full rounded-full bg-bgbtn">
@@ -18,12 +29,16 @@
                             <!-- <circle class="text-gray-200" stroke-width="3" stroke="currentColor" fill="none" cx="50"
                                 cy="50" r="45" /> -->
                             <circle class="text-bgbout progress-circle" stroke-width="4" stroke="currentColor"
-                                fill="none" cx="50" cy="50" r="45" stroke-dasharray="282.6" stroke-dashoffset="45" />
+                                fill="none" cx="50" cy="50" r="45" :stroke-dasharray="282.6"
+                                :stroke-dashoffset="value" />
                         </svg>
+
                         <div class="flex items-center justify-center w-full h-full text-xl font-bold text-white">
                             <div class="flex flex-col text-center">
-                                <p class="text-8xl pb-6 -tracking-num">17:59</p>
-                                <p class="text-base tracking-space">PAUSE</p>
+                                <p class="text-8xl pb-6 -tracking-num">{{ time }}</p>
+                                <button class="text-base tracking-space cursor-pointer z-10" @click="toggleListen">
+                                    {{ msg }}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -53,7 +68,7 @@
 
                                 <span class=" text-xs font-bold opacity-40 text-bgbtn pb-2">pomodoro</span>
                                 <input type="number" id="stepper1" value="25" min="1" max="60" step="1"
-                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent font-bold text-sm text-bgp" >
+                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent font-bold text-sm text-bgp">
                             </div>
 
                             <div class="flex flex-col ">
@@ -92,6 +107,7 @@
                             <div id="app" class="flex gap-4">
                                 <button class="w-10 h-10 rounded-full"
                                     :class="activeButton === 'button1' ? 'border-4 border-bgbtn bg-bgbout' : 'bg-bgbout border-2 border-input'"
+                                    
                                     @click="toggleActive('button1')"></button>
 
                                 <button class="w-10 h-10 rounded-full"
@@ -105,7 +121,8 @@
                         </div>
 
                         <div class="flex justify-center items-center relative">
-                            <button class="bg-bgbout py-3 px-12 text-white rounded-full absolute">
+                            <button
+                                class="bg-bgbout py-3 px-12 text-white rounded-full font-bold text-base absolute hover:bg-opacity-75">
                                 Apply
                             </button>
                         </div>
@@ -124,7 +141,14 @@ export default {
         return {
             isPopupOpen: false,
             isActive: [true, false, false],
-            activeButton: 'button1'
+            activeButton: 'button1',
+            activeObjet: 'Object1',
+            msg: 'START',
+            states: ['PAUSE', 'RESTART', 'START'],
+            currentIndex: 2,
+            value: 0,
+            time: '00.00',
+
         };
     },
     methods: {
@@ -136,6 +160,24 @@ export default {
         },
         toggleActive(button) {
             this.activeButton = button;
+        },
+        toggleObjet(Object) {
+            this.activeObjet = Object;
+        },
+        toggleListen() {
+            if (this.msg === 'START') {
+                this.msg = 'PAUSE';
+                this.value = 45;
+                this.time = 17.59;
+            } else if (this.msg === 'PAUSE') {
+                this.msg = 'RESTART';
+                this.value = 15;
+                this.time = '18.00';
+            } else if (this.msg === 'RESTART') {
+                this.msg = 'START';
+                this.value = 0;
+                this.time = '00.00';
+            }
         }
     }
 };

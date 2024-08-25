@@ -17,7 +17,8 @@ export default {
         pop: '#0A0C1C',
         input: '#EFF1FA',
         bgbout1:'#D881F8',
-        bgbout2:'#70F3F8'
+        bgbout2:'#70F3F8',
+        
 
       },
 
