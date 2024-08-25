@@ -5,18 +5,24 @@
         </div>
         <div
             class="flex bg-bgbtn w-96 rounded-full justify-between px-2 py-2 text-sm font-bold mt-14 text-ft text-opacity-40">
-            <button class="px-6 py-3 rounded-full hover:text-fth hover:bg-bgbout"
-                :class="activeObjet === 'Object1' ? 'bg-bgbout text-fth' : ''" @click="toggleObjet('Object1')">
+            <button class="px-6 py-3 rounded-full hover:text-white"
+                :style="{ backgroundColor: activeObjet === 'Object1' ? selectedColor : '' }"
+                :class="{ 'bg-bgbout text-fth': activeObjet === 'Object1' }" @click="toggleObjet('Object1')">
                 pomodoro
             </button>
-            <button class="px-6 py-3 rounded-full hover:text-fth hover:bg-bgbout"
-                :class="activeObjet === 'Object2' ? 'bg-bgbout text-fth' : ''" @click="toggleObjet('Object2')">
+
+            <button class="px-6 py-3 rounded-full hover:text-white"
+                :style="{ backgroundColor: activeObjet === 'Object2' ? selectedColor : '' }"
+                :class="{ 'bg-bgbout text-fth': activeObjet === 'Object2' }" @click="toggleObjet('Object2')">
                 short break
             </button>
-            <button class="px-6 py-3 rounded-full hover:text-fth hover:bg-bgbout"
-                :class="activeObjet === 'Object3' ? 'bg-bgbout text-fth' : ''" @click="toggleObjet('Object3')">
+
+            <button class="px-6 py-3 rounded-full hover:text-white "
+                :style="{ backgroundColor: activeObjet === 'Object3' ? selectedColor : '' }"
+                :class="{ 'bg-bgbout text-fth': activeObjet === 'Object3' }" @click="toggleObjet('Object3')">
                 long break
             </button>
+
 
         </div>
 
@@ -28,7 +34,7 @@
                         <svg class="absolute inset-0 transform -rotate-90" viewBox="0 0 100 100">
                             <!-- <circle class="text-gray-200" stroke-width="3" stroke="currentColor" fill="none" cx="50"
                                 cy="50" r="45" /> -->
-                            <circle class="text-bgbout progress-circle" stroke-width="4" stroke="currentColor"
+                            <circle class="text-bgbout progress-circle" stroke-width="4" :style="{ stroke: selectedColor || 'currentcolor' }"
                                 fill="none" cx="50" cy="50" r="45" :stroke-dasharray="282.6"
                                 :stroke-dashoffset="value" />
                         </svg>
@@ -107,7 +113,6 @@
                             <div id="app" class="flex gap-4">
                                 <button class="w-10 h-10 rounded-full"
                                     :class="activeButton === 'button1' ? 'border-4 border-bgbtn bg-bgbout' : 'bg-bgbout border-2 border-input'"
-                                    
                                     @click="toggleActive('button1')"></button>
 
                                 <button class="w-10 h-10 rounded-full"
@@ -122,7 +127,9 @@
 
                         <div class="flex justify-center items-center relative">
                             <button
-                                class="bg-bgbout py-3 px-12 text-white rounded-full font-bold text-base absolute hover:bg-opacity-75">
+                               
+                                class="bg-bgbout py-3 px-12 text-white rounded-full font-bold text-base absolute hover:bg-opacity-75"
+                                :style="{ backgroundColor: selectedColor }" @click="togglePopup">
                                 Apply
                             </button>
                         </div>
@@ -132,6 +139,7 @@
                 </div>
             </div>
         </div>
+      
     </div>
 </template>
 
@@ -148,6 +156,9 @@ export default {
             currentIndex: 2,
             value: 0,
             time: '00.00',
+            selectedColor: '',
+            applyColor: '',
+          
 
         };
     },
@@ -160,6 +171,22 @@ export default {
         },
         toggleActive(button) {
             this.activeButton = button;
+            switch (button) {
+                case 'button1':
+                    this.selectedColor = '#F87070'; // Remplacez par la couleur souhaitée
+                    break;
+                case 'button2':
+                    this.selectedColor = '#70F3F8'; // Remplacez par la couleur souhaitée
+                    break;
+                case 'button3':
+                    this.selectedColor = '#D881F8'; // Remplacez par la couleur souhaitée
+                    break;
+                default:
+                    this.selectedColor = '';
+            }
+        },
+        applyColor() {
+
         },
         toggleObjet(Object) {
             this.activeObjet = Object;
