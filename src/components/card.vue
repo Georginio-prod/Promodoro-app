@@ -34,15 +34,15 @@
                         <svg class="absolute inset-0 transform -rotate-90" viewBox="0 0 100 100">
                             <!-- <circle class="text-gray-200" stroke-width="3" stroke="currentColor" fill="none" cx="50"
                                 cy="50" r="45" /> -->
-                            <circle class="text-bgbout progress-circle" stroke-width="4" :style="{ stroke: selectedColor || 'currentcolor' }"
-                                fill="none" cx="50" cy="50" r="45" :stroke-dasharray="282.6"
-                                :stroke-dashoffset="value" />
+                            <circle class="text-bgbout progress-circle" stroke-width="4"
+                                :style="{ stroke: selectedColor || 'currentcolor' }" fill="none" cx="50" cy="50" r="45"
+                                :stroke-dasharray="282.6" :stroke-dashoffset="value" />
                         </svg>
 
                         <div class="flex items-center justify-center w-full h-full text-xl font-bold text-white">
                             <div class="flex flex-col text-center">
                                 <p class="text-8xl pb-6 -tracking-num">{{ time }}</p>
-                                <button class="text-base tracking-space cursor-pointer z-10" @click="toggleListen">
+                                <button class="text-base tracking-space cursor-pointer z-10 " @click="toggleListen">
                                     {{ msg }}
                                 </button>
                             </div>
@@ -127,7 +127,6 @@
 
                         <div class="flex justify-center items-center relative">
                             <button
-                               
                                 class="bg-bgbout py-3 px-12 text-white rounded-full font-bold text-base absolute hover:bg-opacity-75"
                                 :style="{ backgroundColor: selectedColor }" @click="togglePopup">
                                 Apply
@@ -139,7 +138,7 @@
                 </div>
             </div>
         </div>
-      
+
     </div>
 </template>
 
@@ -155,10 +154,10 @@ export default {
             states: ['PAUSE', 'RESTART', 'START'],
             currentIndex: 2,
             value: 0,
-            time: '00.00',
+            time: '00:00',
             selectedColor: '',
             applyColor: '',
-          
+
 
         };
     },
@@ -173,13 +172,13 @@ export default {
             this.activeButton = button;
             switch (button) {
                 case 'button1':
-                    this.selectedColor = '#F87070'; // Remplacez par la couleur souhaitée
+                    this.selectedColor = '#F87070'; 
                     break;
                 case 'button2':
-                    this.selectedColor = '#70F3F8'; // Remplacez par la couleur souhaitée
+                    this.selectedColor = '#70F3F8'; 
                     break;
                 case 'button3':
-                    this.selectedColor = '#D881F8'; // Remplacez par la couleur souhaitée
+                    this.selectedColor = '#D881F8'; 
                     break;
                 default:
                     this.selectedColor = '';
@@ -195,15 +194,15 @@ export default {
             if (this.msg === 'START') {
                 this.msg = 'PAUSE';
                 this.value = 45;
-                this.time = 17.59;
+                this.time = '17:59';
             } else if (this.msg === 'PAUSE') {
                 this.msg = 'RESTART';
                 this.value = 15;
-                this.time = '18.00';
+                this.time = '18:00';
             } else if (this.msg === 'RESTART') {
                 this.msg = 'START';
                 this.value = 0;
-                this.time = '00.00';
+                this.time = '00:00';
             }
         }
     }
@@ -223,7 +222,7 @@ export default {
 </script>
 
 <style>
-/* Votre fichier CSS ou fichier de style Tailwind */
+
 
 .shadow-custom {
     box-shadow: 5px 15px 50px #0E112A,
@@ -234,14 +233,12 @@ export default {
     /* Ombre intérieure */
 }
 
-/* Votre fichier CSS ou dans un <style> tag */
 circle {
     transition: stroke-dashoffset 0.35s;
 }
 
 .text-blue-500 {
     stroke: #3b82f6;
-    /* Couleur de la progression */
 }
 
 .text-gray-200 {
@@ -252,20 +249,16 @@ circle {
 .progress-circle {
     /* stroke: #3b82f6; Couleur de la progression */
     stroke-linecap: round;
-    /* Arrondir les bords du cercle */
-    /* transition: stroke-dashoffset 0.35s; */
+   
 }
 
-/* Supprimer l'apparence par défaut dans Firefox */
 input[type="number"] {
     -moz-appearance: textfield;
-    /* Supprime l'apparence par défaut de l'input number */
 }
 
 /* Rendre les flèches de défilement visibles */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     opacity: 50;
-    /* Assure que les flèches de défilement sont visibles */
 }
 </style>
