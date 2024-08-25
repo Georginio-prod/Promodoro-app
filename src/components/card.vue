@@ -32,16 +32,14 @@
                 <div class="w-full h-full rounded-full">
                     <div class="relative w-full h-full">
                         <svg class="absolute inset-0 transform -rotate-90" viewBox="0 0 100 100">
-                            <!-- <circle class="text-gray-200" stroke-width="3" stroke="currentColor" fill="none" cx="50"
-                                cy="50" r="45" /> -->
                             <circle class="text-bgbout progress-circle" stroke-width="4"
                                 :style="{ stroke: selectedColor || 'currentcolor' }" fill="none" cx="50" cy="50" r="45"
-                                :stroke-dasharray="282.6" :stroke-dashoffset="value" />
+                                :stroke-dasharray="282.6" :stroke-dashoffset="strokeDashoffset" />
                         </svg>
 
                         <div class="flex items-center justify-center w-full h-full text-xl font-bold text-white">
                             <div class="flex flex-col text-center">
-                                <p class="text-8xl pb-6 -tracking-num">{{ time }}</p>
+                                <p class="text-8xl pb-6 -tracking-num">{{ formattedTime }}</p>
                                 <button class="text-base tracking-space cursor-pointer z-10 " @click="toggleListen">
                                     {{ msg }}
                                 </button>
@@ -73,20 +71,23 @@
                             <div class="flex flex-col">
 
                                 <span class=" text-xs font-bold opacity-40 text-bgbtn pb-2">pomodoro</span>
-                                <input type="number" id="stepper1" value="25" min="1" max="60" step="1"
-                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent font-bold text-sm text-bgp">
+                                <input type="number" id="stepper1" v-model.number="pomodoroTime" min="1" max="60"
+                                    step="1"
+                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent font-bold text-sm text-bgp" />
                             </div>
 
-                            <div class="flex flex-col ">
+                            <div class="flex flex-col">
                                 <span class="text-sm font-semibold opacity-40 text-bgbtn pb-2">short break</span>
-                                <input type="number" id="stepper2" value="25" min="1" max="60" step="1"
-                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent font-bold text-sm text-bgp">
+                                <input type="number" id="stepper2" v-model.number="shortBreakTime" min="1" max="60"
+                                    step="1"
+                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent font-bold text-sm text-bgp" />
                             </div>
 
                             <div class="flex flex-col">
                                 <span class="text-sm font-semibold opacity-40 text-bgbtn pb-2">long break</span>
-                                <input type="number" id="stepper3" value="25" min="1" max="60" step="1"
-                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent font-bold text-sm text-bgp">
+                                <input type="number" id="stepper3" v-model.number="longBreakTime" min="1" max="60"
+                                    step="1"
+                                    class="w-24 bg-input py-2 px-4 rounded-lg focus:outline-none focus:border-transparent font-bold text-sm text-bgp" />
                             </div>
 
                         </div>
@@ -151,79 +152,104 @@ export default {
             activeButton: 'button1',
             activeObjet: 'Object1',
             msg: 'START',
-            states: ['PAUSE', 'RESTART', 'START'],
-            currentIndex: 2,
-            value: 0,
-            time: '00:00',
+            strokeDashoffset: 282.6, // Initial offset
+            pomodoroTime: 25,
+            shortBreakTime: 5,
+            longBreakTime: 15,
+            timeRemaining: 0,
             selectedColor: '',
-            applyColor: '',
-
-
+            intervalId: null,
         };
+    },
+    computed: {
+        formattedTime() {
+            const minutes = Math.floor(this.timeRemaining / 60);
+            const seconds = this.timeRemaining % 60;
+            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        },
     },
     methods: {
         togglePopup() {
             this.isPopupOpen = !this.isPopupOpen;
         },
         toggleFocus(index) {
-            this.isActive = this.isActive.map((active, i) => i === index ? true : false);
+            this.isActive = this.isActive.map((active, i) => i === index);
         },
         toggleActive(button) {
             this.activeButton = button;
             switch (button) {
                 case 'button1':
-                    this.selectedColor = '#F87070'; 
+                    this.selectedColor = '#F87070';
                     break;
                 case 'button2':
-                    this.selectedColor = '#70F3F8'; 
+                    this.selectedColor = '#70F3F8';
                     break;
                 case 'button3':
-                    this.selectedColor = '#D881F8'; 
+                    this.selectedColor = '#D881F8';
                     break;
                 default:
                     this.selectedColor = '';
             }
         },
-        applyColor() {
-
-        },
         toggleObjet(Object) {
             this.activeObjet = Object;
+            this.resetTimer(); // Reset timer when switching objects
         },
         toggleListen() {
             if (this.msg === 'START') {
                 this.msg = 'PAUSE';
-                this.value = 45;
-                this.time = '17:59';
+                this.startTimer();
             } else if (this.msg === 'PAUSE') {
                 this.msg = 'RESTART';
-                this.value = 15;
-                this.time = '18:00';
+                clearInterval(this.intervalId);
+                this.intervalId = null;
             } else if (this.msg === 'RESTART') {
                 this.msg = 'START';
-                this.value = 0;
-                this.time = '00:00';
+                this.resetTimer();
             }
-        }
-    }
+        },
+        startTimer() {
+            this.intervalId = setInterval(() => {
+                if (this.timeRemaining > 0) {
+                    this.timeRemaining--;
+                    this.updateProgress();
+                } else {
+                    clearInterval(this.intervalId);
+                    this.intervalId = null;
+                    this.msg = 'START';
+                }
+            }, 1000);
+        },
+        resetTimer() {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+            this.timeRemaining = this.getCurrentDuration(); // Réinitialise à la durée initiale
+            this.updateProgress();
+        },
+        updateProgress() {
+            const totalDuration = this.getCurrentDuration();
+            const progress = ((totalDuration - this.timeRemaining) / totalDuration) * 282.6;
+            this.strokeDashoffset = 282.6 - progress;
+        },
+        getCurrentDuration() {
+            switch (this.activeObjet) {
+                case 'Object1':
+                    return this.pomodoroTime * 60;
+                case 'Object2':
+                    return this.shortBreakTime * 60;
+                case 'Object3':
+                    return this.longBreakTime * 60;
+            }
+            return 0;
+        },
+    },
+    mounted() {
+        this.timeRemaining = this.pomodoroTime * 60;
+    },
 };
-
-// function setProgress(progress) {
-//     const circle = document.querySelector('.text-blue-500');
-//     const radius = circle.r.baseVal.value;
-//     const circumference = 2 * Math.PI * radius;
-
-//     circle.style.strokeDasharray = circumference;
-//     circle.style.strokeDashoffset = circumference - (progress / 100) * circumference;
-//   }
-
-//   // Exemple : Mettre à jour la progression à 75%
-//   setProgress(75);
 </script>
 
 <style>
-
-
 .shadow-custom {
     box-shadow: 5px 15px 50px #0E112A,
         /* Ombre en haut à droite */
@@ -249,7 +275,7 @@ circle {
 .progress-circle {
     /* stroke: #3b82f6; Couleur de la progression */
     stroke-linecap: round;
-   
+
 }
 
 input[type="number"] {
